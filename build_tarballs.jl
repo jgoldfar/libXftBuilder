@@ -2,6 +2,9 @@
 # `julia build_tarballs.jl --help` to see a usage message.
 using BinaryBuilder
 
+name = "libXftBuilder"
+version = v"0.1.0"
+
 # Collection of sources required to build libXft
 sources = [
     "https://gitlab.freedesktop.org/xorg/lib/libxft.git" =>
@@ -49,5 +52,5 @@ dependencies = [
 ]
 
 # Build the tarballs, and possibly a `build.jl` as well.
-build_tarballs(ARGS, "libXft", sources, script, platforms, products, dependencies)
+build_tarballs(ARGS, name, version, sources, script, platforms, products, dependencies)
 
