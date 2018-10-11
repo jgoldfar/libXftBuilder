@@ -17,7 +17,7 @@ cache:
 env:
   global:
     - BINARYBUILDER_DOWNLOADS_CACHE=downloads
-    - BINARYBUILDER_AUTOMATIC_APPLE=false
+    - BINARYBUILDER_AUTOMATIC_APPLE=true
   matrix:
     - TARGET=x86_64-linux-gnu
     - TARGET=x86_64-linux-musl
