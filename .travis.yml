@@ -1,0 +1,40 @@
+language: julia
+os:
+  - linux
+julia:
+  - 0.6
+notifications:
+  email: false
+git:
+  depth: 99999999
+cache:
+  timeout: 1000
+  directories:
+    - downloads
+env:
+  global:
+    - BINARYBUILDER_DOWNLOADS_CACHE=downloads
+    - BINARYBUILDER_AUTOMATIC_APPLE=false
+sudo: required
+
+# Before anything else, get the latest versions of things
+before_script:
+  - julia -e 'Pkg.clone("https://github.com/JuliaPackaging/BinaryProvider.jl")'
+  - julia -e 'Pkg.clone("https://github.com/JuliaPackaging/BinaryBuilder.jl"); Pkg.build()'
+
+script:
+  - julia build_tarballs.jl
+
+
+deploy:
+    provider: releases
+    api_key:
+        # Note; this api_key is only valid for jgoldfar/libXftBuilder; you need
+        # to make your own: https://docs.travis-ci.com/user/deployment/releases/
+        secure: EyN+xsNM9mdK3DKcTHBXI41W0igAInX6Nf8UYuOX2QTjMyquxD+thsJ8m+YC8xEqA3kg5KS3wI4GZZw9qXFNAdNfc0IddqaqIpbfNPwJaTzUcuSS41RD1RDIzvxMiJ7aGKKnydkZI2EFdPfcw0UHriYvpp7VSW6fBu2GR4RLb/niLtFRmKdhV+eofsH7kM8cx4r8wvC0NfbJ60tZ8Rv0whqgpMEYkzvVOKaL5rOrflIk3IeiQ2DB/FC6Lp44IcDWs3vK+as5gYS6+ezUO2AkBQleeB6A8kKVs8dNSFBV/TDadaNYDx6JouoAAgoV3bKqlEacFmwJYN6Uh4X9MlHFmItxfb0CWnjD5uLoapeadNteYIqP9atGCIT+bpOBEqAp7YSddEto39Qc9Y5OLDBuXoTJq0J4p+1ohE65yli5jluP6i98H0uov2zqR42OBUIivX4c+HTkIx1yYsEh5SIpVOyYoZJTxaXMeKbVGnPJgs/yZd1O6lsV+h5xyjQ/nIM3MsJ1NB9Yr9e0RQ1X5uN6At+m4vegQpen4Th3tHmepUf2O5iV8Yv7FA2+QpnAbfuUV+/0k7xWL2EfdTildkrA9Yr2vsA61VRIWA/QeaTNSlyNznXntVYh26KscvM2TikkeoYRixkHGn0m1xSy4ea4ySGtJtGfVbrbNBqJzpdJ1Ns=
+    file_glob: true
+    file: products/*
+    skip_cleanup: true
+    on:
+        repo: jgoldfar/libXftBuilder
+        tags: true
